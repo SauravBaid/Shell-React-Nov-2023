@@ -8,7 +8,7 @@ export function sort(bugs, attrName, isDesc){
     if (isDesc)
         comparer = getDescComparer(comparer);
     bugs.sort(comparer);
-    return { 
+    const sort_action = { 
         type : 'BUGS_SORT', 
         payload : {
             sortAttr : attrName,
@@ -16,4 +16,6 @@ export function sort(bugs, attrName, isDesc){
             bugs : bugs
         }
     };
+    
+    return sort_action;
 }

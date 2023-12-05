@@ -3,10 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { Provider } from 'react-redux';
 
-import { bindActionCreators } from 'redux';
-import * as bugActionCreators from './bugs/actions';
-import { projectActionCreators } from './projects';
-
 import store from './store';
 import Bugs from './bugs';
 import Projects from './projects';
@@ -30,9 +26,6 @@ const App =() => {
 } 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
-const bugActionDispatchers = bindActionCreators(bugActionCreators, store.dispatch);
-const projectActionDispatchers = bindActionCreators(projectActionCreators, store.dispatch);
 
 root.render(
     <Provider store={store}>
