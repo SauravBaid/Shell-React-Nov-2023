@@ -30,6 +30,7 @@
             }
         }
 
+        // Function composition
         function bindActionCreators(actionCreators, dispatch){
             const actionDispatchers = {}
             for(let key in actionCreators){
@@ -49,6 +50,9 @@
             const onIncrementClick = () => {
                 actionDispatchers.increment(delta);
             }
+            const onDouble = () => {
+                actionDispatchers.double();
+            }
             return (
                 <div>
                     <h1>Spinner</h1>
@@ -59,6 +63,7 @@
                     <button onClick={onDecrementClick}>Decrement</button>
                     <span>[{value}]</span>
                     <button onClick={onIncrementClick}>Increment</button>
+                    <button onClick={onDouble}>Double</button>
                 </div>
             )
         }
@@ -66,6 +71,7 @@
         function spinnerReducer(currentState = 50, action) {
             if (action.type === 'INCREMENT') return currentState + action.payload;
             if (action.type === 'DECREMENT') return currentState - action.payload;
+            if (action.type === 'DOUBLE') return currentState*2;
             return currentState;
         }
         

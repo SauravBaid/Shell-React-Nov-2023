@@ -87,6 +87,7 @@
 
             const onBtnRemoveClosedClick = () => {
                 const openBugs = bugs.filter(bug => !bug.isClosed)
+                console.log("Called")
                 setBugs(openBugs)
             }
 

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Tracker</title>
+    <!-- 
+        Use Cases:
+        ==================
+        1. Add new bugs
+        2. List the added bugs
+        3. Toggle the 'closed' status of any bug
+        4. Remove any bug
+        5. Remove all 'closed' bugs
+        6. Display stats
+        6b. Refactor the application
+        7. Sort the bugs
+        8. Persist the bugs in the server
+        9. Make the bugs accessible using unique urls (routing)
+        10. Add the projects module and make the bugs related to projects
+     -->
+     <style>
+        body{
+            margin-left: 30px;
+        }
+        section{
+            margin-bottom: 10px;
+        }
+        .closed{
+            font-style: italic;
+            font-weight: bold;
+            text-decoration: line-through;
+            color: red;
+        }
+        .stats, .bugname {
+            font-size: 18pt;
+        }
+        .bugname{
+            cursor: pointer;
+        }
+        .datetime{
+            font-style: italic;
+        }
+        ul{
+            width: 500px;
+            list-style: none;
+            -webkit-padding-start: 0px;
+        }
+        li{
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid gray;
+            background-color: #e7e7e7;
+            border-radius: 10px;
+        }
+
+     </style>
+    <script src="babel.min.js"></script>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+     <script type="text/babel">
+        const BugStats = ({closeBugCount, count}) => {
+            return (
+                <section className="stats">
+                    <span className="closed">{closeBugCount}</span>
+                    <span>/</span>
+                    <span>{count}</span>
+                </section>
+            )
+        } 
+        // const BugEdit
+        const BugEdit = ({newBug,setNewBug,handleAdd}) => {
+            return (
+                <>
+                    <section className="edit">
+                        <label htmlFor="">Bug Name :</label>
+                        <input type="text" name="bugName" id="" onChange={(e)=>setNewBug(e.target.value)} value={newBug}/>
+                        <button onClick = {handleAdd}>Add New</button>
+                    </section>
+                </>
+            )
+        }
+        // const BugSort
+        const BugSort =  () => {
+            return  (
+                <section className="sort">
+                    <label htmlFor="">Order By :</label>
+                    <select name="" id="">
+                        <option value=""></option>
+                        <option value=""></option>
+                    </select>
+                    <label htmlFor="">Descending ?:</label>
+                    <input type="checkbox" name="" id=""/>
+                </section>
+            )
+        }
+        // const BugList
+        const BugList = ({bugList, toggleStatus, handleRemove, handleRemoveAllClosed}) => {
+            return (
+                <section className="list">
+                    <ul>
+                        {
+                            bugList.map((bug)=>(
+                                <BugItem bug={bug} handleRemove={handleRemove} toggleStatus={toggleStatus}/>
+                            ))
+                        }
+                    </ul>
+                    <button onClick ={handleRemoveAllClosed}>Remove Closed</button>
+                </section>
+            )
+        }
+        // const BugItem
+        const BugItem = ({bug, handleRemove, toggleStatus}) => {
+            return (
+                <li >
+                    <span className={`bugname ${!bug.status?'closed':''}`} onClick ={() => toggleStatus(bug)}>{bug.name}</span>
+                    <div className="datetime">{bug.createdAt}</div>
+                    <button onClick ={()=>handleRemove(bug)}>Remove</button>
+                </li>
+            )
+        }
+
+        const AppComponent = () => {
+            const [bugList, setBugList] = React.useState([{
+                    name:"New bug 1",
+                    id:0,
+                    status: true,
+                    createdAt: new Date().toDateString()
+                },
+                {
+                    name:"New bug 2",
+                    id:1,
+                    status: true,
+                    createdAt: new Date().toDateString()
+                }])
+            const [newBug, setNewBug] = React.useState('')
+            const [count, setCount] = React.useState(2)
+            const [closeBugCount, setClosedCount] = React.useState(0)
+
+            const handleAdd = () => {
+                let newObj = {
+                    name:newBug,
+                    id:count,
+                    status: true,
+                    createdAt: new Date().toDateString()
+                };
+                setNewBug('')
+                setCount(count+1)
+                setBugList([...bugList,newObj])
+            }
+
+            const toggleStatus = (bug) => {
+                let orgBugList = bugList;
+                orgBugList.map((b) => {
+                    if(b.id === bug.id){
+                        b.status = !b.status;
+                    }
+                });
+                setBugList([...orgBugList]);
+                computeClosedBug();
+            }
+
+            const handleRemove = (removeBug) => {
+                let orgBugList = bugList;
+                orgBugList = orgBugList.filter((bug)=> {
+                    if(bug.id!=removeBug.id) return bug
+                })
+                setBugList([...orgBugList]);
+            }
+
+            const handleRemoveAllClosed = () =>{
+                let orgBugList = bugList;
+                orgBugList = orgBugList.filter((bug)=> {
+                    if(bug.status) return bug
+                })
+                setBugList([...orgBugList]);
+            }
+
+            const computeClosedBug = () => {
+                let c = 0;
+                bugList.map((bug)=> {
+                    if(!bug.status){
+                        c = c+1;
+                    } 
+                })
+                setClosedCount(c)
+            }
+
+
+            return (
+                <>
+                    <h1>Bug Tracker</h1>
+                    <hr />
+                    <BugStats closeBugCount={closeBugCount} count={count}/>
+                    <BugEdit setNewBug={setNewBug} handleAdd={handleAdd} newBug ={newBug}/>
+                    <BugSort />
+                    <BugList bugList={bugList} toggleStatus={toggleStatus} handleRemove = {handleRemove} handleRemoveAllClosed={handleRemoveAllClosed}/>
+                </>
+            )
+        }
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<AppComponent/>)
+     </script>
+</head>
+<body>
+    <div id="root">
+    </div>
+</body>
+</html>

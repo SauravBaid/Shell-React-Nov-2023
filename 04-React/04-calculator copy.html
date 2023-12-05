@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        .field{
+            margin-bottom: 5px;
+        }
+        label{
+            display: block;
+        }
+        .result{
+            font-size: 18pt;
+        }
+        .positive{
+            color:green;
+        }
+        .negative{
+            color:red;
+        }
+    </style>
+    <script src="babel.min.js"></script>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    <script type="text/babel">
+
+        const CalculatorResult = (props) => {
+            return (
+                <>
+                    <div className={`result ${props.result > 0 ? 'positive' : 'negative'} `}>{props.result}</div>
+                </>
+            )
+        }
+
+        const Calculator = () => {
+            const [result, setResult] = React.useState(0);
+            const [n1, setN1] = React.useState(0);
+            const [n2, setN2] = React.useState(0);
+
+            /* 
+            const onBtnClick = (evt) => {
+                switch (evt.target.innerText) {
+                    case 'Add':
+                        setResult(n1 + n2)
+                        break;
+                    case 'Subtract':
+                        setResult(n1 - n2)
+                        break;
+                    case 'Multiply':
+                        setResult(n1 * n2)
+                        break;
+                    case 'Divide':
+                        setResult(n1 / n2)
+                        break;
+                
+                    default:
+                        break;
+                }
+            } 
+            */
+           const onBtnClick = (operation) => {
+                switch (operation) {
+                    case 'Add':
+                        setResult(n1 + n2)
+                        break;
+                    case 'Subtract':
+                        setResult(n1 - n2)
+                        break;
+                    case 'Multiply':
+                        setResult(n1 * n2)
+                        break;
+                    case 'Divide':
+                        setResult(n1 / n2)
+                        break;
+
+                    default:
+                        break;
+                }
+            } 
+            return (
+                <>
+                    <h1>Calculator</h1>
+                    <div className="field">
+                        <label for="">Number 1:</label>
+                        <input type="number" onInput={(evt) => setN1(parseInt(evt.target.value))}/>
+                    </div>
+                    <div className="field">
+                        <label for="">Number 2:</label>
+                        <input type="number" onInput={(evt) => setN2(parseInt(evt.target.value))}/>
+                    </div>
+                    <br/>
+                    <button onClick={() => onBtnClick('Add')}>Add</button>
+                    <button onClick={() => onBtnClick('Subtract')}>Subtract</button>
+                    <button onClick={() => onBtnClick('Multiply')}>Multiply</button>
+                    <button onClick={() => onBtnClick('Divide')}>Divide</button>
+                    <CalculatorResult result={result}/>
+                </>
+            )
+        }
+
+
+        const root = ReactDOM.createRoot (document.getElementById('root'))
+        root.render(<Calculator/>)
+    </script>
+</head>
+<body>
+    <div id="root">
+        
+    </div>
+</body>
+</html>

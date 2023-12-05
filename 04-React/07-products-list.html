@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <script src="babel.min.js"></script>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"> </script>
+    <script type="text/babel">
+        const Products = () => {
+            const [newProduct, setnewProduct] = React.useState('')
+            const [productNames, setproductNames] = React.useState(['Pen', 'Pencil', 'Marker'])
+            /* 
+            const productItems = []
+            for (let productName of productNames)
+                productItems.push(<li key={productName}>{productName}</li>) 
+            */
+            const OnInputChange = (e) => {
+                setnewProduct(e.target.value)
+                
+            }
+
+            const AddProduct = () => {
+                setproductNames([...productNames, newProduct])
+            }
+
+            const handleDelete = (product) => {
+                let tempPName = productNames
+                tempPName = tempPName.filter((item)=>item!=product)
+                setproductNames(tempPName)
+            }
+
+            const productItems = productNames.map(pn => (<li key={pn}>{pn}<button onClick={()=>handleDelete(pn)}>Delete</button></li>))
+            return (
+                <>
+                <h3>Products</h3>
+                <input type="text" name="new-product" id="new-product" onChange={OnInputChange}/>
+                <button onClick = {AddProduct}>Add</button>
+                <ul>
+                    {productItems}
+                </ul>
+                </>
+            );
+
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Products/>)
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+</html>

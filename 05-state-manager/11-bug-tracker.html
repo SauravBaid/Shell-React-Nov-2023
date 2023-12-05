@@ -88,6 +88,40 @@
                 const openBugs = bugs.filter(bug => !bug.isClosed)
                 const init_bug_action = { type : 'BUGS_INIT', payload : openBugs}
                 return init_bug_action;
+            },
+            orderBy(bugs,param){
+                const sortedArray = bugs.sort((a, b) => 
+                {
+                    switch (param) {
+                        case 'id':
+                            return a.id-b.id;
+                            break;
+                        case 'name':
+                            let nameA = a.name.toUpperCase(),
+                                nameB = b.name.toUpperCase();
+                            if (nameA < nameB) {
+                                return -1;
+                            } else if (nameA > nameB) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                            console.log(a,b)
+                            break;
+                        case 'isClosed':
+                            if(a.isClosed) return 1;
+                            else if (b.isClosed) return -1 
+                        case 'createdAt':
+                            return a.createdAt-b.createdAt
+                            break;  
+                        default:
+                            break;
+                    }
+                });
+                console.log(sortedArray)
+                return {type: 'BUGS_SORT', payload: sortedArray}
+                // return sortedArray
+
             }
         }
 
@@ -100,9 +134,12 @@
                 </section>
             )
         }
-        const Bugs = ({bugs, addNew, toggle, remove, removeClosed}) => {
+        const Bugs = ({bugs, addNew, toggle, remove, removeClosed, orderBy}) => {
             const [newBugName, setNewBugName] = React.useState(''); 
+            const [selectedValue, setSelectedValue] = React.useState(''); 
             const closedCount = bugs.reduce((prevResult, bug ) => bug.isClosed ? prevResult + 1 : prevResult, 0)           
+            
+            
             return (
                 <>
                     <BugStats count={bugs.length} closedCount={closedCount}/>
@@ -113,11 +150,13 @@
                     </section>
                     <section className="sort">
                         <label htmlFor="">Order By :</label>
-                        <select name="" id="">
-                            <option value="">--- Select ---</option>
+                        <select value={selectedValue} onChange={(e)=>{
+                            setSelectedValue(e.target.value)
+                            orderBy(bugs,e.target.value)
+                        }}>
                             <option value="id">Id</option>
                             <option value="name">Name</option>
-                            <option value="isClosed">Status</option>
+                            <option value="isClosed">isClosed</option>
                             <option value="createdAt">Created</option>
                         </select>
                         <label htmlFor="">Descending ?:</label>
@@ -173,6 +212,8 @@
                     return currentState.filter(bug => bug.id !== bugToRemove.id)
                 case 'BUGS_INIT':
                     return action.payload;
+                case 'BUGS_SORT':
+                    return [...action.payload];
                 default:
                     break;
             }

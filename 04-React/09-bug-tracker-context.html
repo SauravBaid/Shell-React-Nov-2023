@@ -67,14 +67,19 @@
 
             subscribe(listernFn){
                 this._changeListeners.push(listernFn);
+                console.log(">>>>",listernFn, this._changeListeners)
             }
 
             get bugs() {
                 return [...this._list];
             }
             set bugs(list){
+                console.log("set function")
                 this._list = list;
-                this._changeListeners.forEach(listernFn => listernFn())
+                console.log(this._changeListeners)
+                this._changeListeners.forEach(listernFn => {
+                    console.log(listernFn)
+                    listernFn()})
             }
 
             createNew(newBugName){
