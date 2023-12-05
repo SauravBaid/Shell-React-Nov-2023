@@ -1,12 +1,12 @@
 
-const BugSort = ({bugs, sort, sortAttr, sortByDesc}) => {
+const BugSort = ({sort, sortAttr, sortByDesc}) => {
     
     const onSortAttrChange = ({target}) => {
-        sort(bugs, target.value, sortByDesc)
+        sort(target.value, sortByDesc)
     }
 
     const onSortDescChange = ({target}) => {
-        sort(bugs, sortAttr, target.checked);
+        sort(sortAttr, target.checked);
     }
 
     return (

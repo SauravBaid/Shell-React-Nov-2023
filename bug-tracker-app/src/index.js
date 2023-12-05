@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import Bugs from './bugs';
 import Projects from './projects';
+import BugRemoveClosed from './bugs/views/bug-remove-closed';
 
 const App =() => {
     const [userChoice, setUserChoice] = React.useState('');
@@ -18,7 +19,7 @@ const App =() => {
             <button onClick={() => setUserChoice('projects')}>Projects</button>
         </div>
         <div>
-            {userChoice === 'bugs' && <Bugs/>}
+            {userChoice === 'bugs' && <> <Bugs/> <BugRemoveClosed/> </>}
             {userChoice === 'projects' && <Projects/>}
         </div>
     </>

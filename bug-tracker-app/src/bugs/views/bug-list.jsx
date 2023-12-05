@@ -10,7 +10,6 @@ const BugList = ({ removeClosed}) => {
                     <BugItem key={bug.id} bug={bug} />
                 ))}
             </ul>
-            <button onClick={() => removeClosed(bugs)}>Remove Closed</button>
         </section>
     )
 }

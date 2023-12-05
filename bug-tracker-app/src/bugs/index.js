@@ -30,7 +30,7 @@ const Bugs = ({}) => {
             <input type="checkbox" value={showClosed} onChange={({target}) => setShowClosed(target.checked)}/>
             <BugStats count={bugs.length} closedCount={closedCount}/>
             <BugEdit addNew={addNew}/>
-            <BugSort bugs={bugs} sort={sort} sortAttr={sortAttr} sortByDesc={sortByDesc}/>
+            <BugSort sort={sort} sortAttr={sortAttr} sortByDesc={sortByDesc}/>
             <BugList {...{ removeClosed}} />
         </>
     )
