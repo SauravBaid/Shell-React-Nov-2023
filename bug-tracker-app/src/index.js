@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import { Provider } from 'react-redux';
+
 import { bindActionCreators } from 'redux';
 import * as bugActionCreators from './bugs/actions';
 import { projectActionCreators } from './projects';
@@ -9,16 +11,7 @@ import store from './store';
 import Bugs from './bugs';
 import Projects from './projects';
 
-
-
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-
-const bugActionDispatchers = bindActionCreators(bugActionCreators, store.dispatch);
-const projectActionDispatchers = bindActionCreators(projectActionCreators, store.dispatch);
-
-
-const App =({bugsState, projectsState}) => {
+const App =() => {
     const [userChoice, setUserChoice] = React.useState('');
     return (
     <>
@@ -29,23 +22,23 @@ const App =({bugsState, projectsState}) => {
             <button onClick={() => setUserChoice('projects')}>Projects</button>
         </div>
         <div>
-            {userChoice === 'bugs' && <Bugs bugsState={bugsState} {...bugActionDispatchers}/>}
-            {userChoice === 'projects' && <Projects projects={projectsState} {...projectActionDispatchers}/>}
+            {userChoice === 'bugs' && <Bugs/>}
+            {userChoice === 'projects' && <Projects/>}
         </div>
     </>
     )
 } 
 
-function renderApp(){
-    const storeState = store.getState();
-    const projectsState = storeState.projectsStore;
-    const bugsState= storeState.bugsStore;
-    root.render(<App bugsState={bugsState} projectsState={projectsState}/>)
-}
+const root = ReactDOM.createRoot(document.getElementById('root'));
 
+const bugActionDispatchers = bindActionCreators(bugActionCreators, store.dispatch);
+const projectActionDispatchers = bindActionCreators(projectActionCreators, store.dispatch);
 
-renderApp();
-store.subscribe(renderApp)
+root.render(
+    <Provider store={store}>
+        <App/>
+    </Provider>
+)
 
 /* ES6 Modules examples */
 

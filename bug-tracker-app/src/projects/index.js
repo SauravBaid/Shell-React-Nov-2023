@@ -1,3 +1,5 @@
+import { useSelector, useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
 
 export function projectsReducer(currenState = [], action){
     if (action.type === 'PROJECTS_INIT') return action.payload;
@@ -15,7 +17,10 @@ export const projectActionCreators = {
     }
 }
 
-const Projects = ({projects, load}) => {
+const Projects = () => {
+    const projects = useSelector(storeState => storeState.projectsStore)
+    const dispatch = useDispatch();
+    const { load } = bindActionCreators(projectActionCreators, dispatch);
     return (
         <>
         <h3>Projects</h3>
