@@ -1,18 +1,12 @@
-import { useState
- } from "react";
+
 const BugSort = ({bugs, sort, sortAttr, sortByDesc}) => {
-    const [sortAttrName, setSortAttrName] = useState('');
-    const [isDesc, setSortByDesc] = useState(false);
-
+    
     const onSortAttrChange = ({target}) => {
-
-        setSortAttrName(target.value);
-        sort(bugs, target.value, isDesc)
+        sort(bugs, target.value, sortByDesc)
     }
 
     const onSortDescChange = ({target}) => {
-        setSortByDesc(target.checked);
-        sort(bugs, sortAttrName, target.checked);
+        sort(bugs, sortAttr, target.checked);
     }
 
     return (
